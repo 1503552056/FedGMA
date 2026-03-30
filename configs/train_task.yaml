@@ -1,0 +1,67 @@
+runtime:
+  rounds: 10
+  sample_ratio: 1.0
+  gpus:        
+  clients_per_gpu: 1
+  out_dir: 
+
+task: vision-cls  
+
+model:
+  name: CLIP-ViT-L/14@336    
+  local_path: 
+  num_labels: 345
+  lora:
+    enable: false
+
+data:
+  kind:
+  local_hf_dset_dir: 
+  val_ratio: 
+  max_length: 
+  num_classes: 
+
+train:
+  batch_size: 2
+  local_epochs: 1
+  lr: 5e-5
+  wd: 0.01
+  grad_accum_steps: 8
+  use_amp: true
+  amp_dtype: bf16
+  grad_ckpt: true
+  eval_every: 1
+  max_steps: 0
+  log_loss_every: 20
+io:
+  save_dir: 
+eval:
+  every: 1                   
+  metric: accuracy           
+output:
+  save_dir: 
+
+meta:
+  K: 6
+  tau: 1.0
+  eta: 0.5
+  epsilon: 1e-6
+  inner_steps: 1
+  proxy_batches: 2
+  meta_inner_lr: 1e-3
+
+dataset:
+  name: domainnet_hf      
+  root: 
+  categories: []       
+  groups_csv:
+  amazon:
+    root: 
+    domains: ["books","dvd","electronics","kitchen"]
+    text_field: text
+    label_field: label
+
+federation:
+  shards_per_category: 3        
+  seed: 42                      
+  save_spec_path: 
